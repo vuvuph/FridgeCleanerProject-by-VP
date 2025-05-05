@@ -1,0 +1,213 @@
+.titleContainer {
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
+  display: flex;
+}
+
+@media (width<=991px) {
+  .titleContainer {
+    margin-top: 40px;
+  }
+}
+
+.titleWrapper {
+  align-items: center;
+  gap: 10px;
+  display: flex;
+}
+
+.mainTitle {
+  color: #fff;
+  text-align: center;
+  font-family: Ballonku;
+  font-size: 80px;
+}
+
+@media (width<=991px) {
+  .mainTitle {
+    font-size: 60px;
+  }
+}
+
+@media (width<=640px) {
+  .mainTitle {
+    font-size: 40px;
+  }
+}
+
+.subtitle {
+  color: #fff;
+  font-family: Ballonku;
+  font-size: 30px;
+}
+
+@media (width<=991px) {
+  .subtitle {
+    font-size: 24px;
+  }
+}
+
+@media (width<=640px) {
+  .subtitle {
+    font-size: 18px;
+  }
+}
+
+.searchSection {
+  background-color: #d5c7a3;
+  border-radius: 27px;
+  flex-direction: column;
+  align-items: center;
+  gap: 38px;
+  width: 820px;
+  margin-top: 60px;
+  padding: 36px 47px;
+  display: flex;
+}
+
+@media (width<=991px) {
+  .searchSection {
+    width: 100%;
+    margin-top: 40px;
+    padding: 24px;
+  }
+}
+
+.searchTitle {
+  color: #000;
+  text-align: center;
+  font-family: Forum;
+  font-size: 48px;
+}
+
+@media (width<=991px) {
+  .searchTitle {
+    font-size: 36px;
+  }
+}
+
+@media (width<=640px) {
+  .searchTitle {
+    font-size: 28px;
+  }
+}
+
+.inputWrapper {
+  background-color: #fff;
+  border-radius: 12px;
+  width: 522px;
+  height: 40px;
+  padding: 5px 17px;
+}
+
+@media (width<=991px) {
+  .inputWrapper {
+    width: 100%;
+  }
+}
+
+.body {
+  color: #000;
+  background-color: #d5c7a3;
+  border-radius: 27px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 720px;
+  max-width: 100%;
+  min-height: 451px;
+  margin-top: 21px;
+  margin-bottom: -23px;
+  padding: 36px 47px 190px;
+  font-family:
+    Forum,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+@media (width<=991px) {
+  .body {
+    margin-bottom: 10px;
+    padding-bottom: 100px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+.whatareyoucookingtoday {
+  font-size: 48px;
+  font-family: Forum;
+}
+@media (width<=991px) {
+  .whatareyoucookingtoday {
+    max-width: 100%;
+    font-size: 40px;
+  }
+}
+
+.inputField {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 10px;
+  width: 522px;
+  max-width: 100%;
+  min-height: 40px;
+  margin-top: 38px;
+  padding: 9px 12px 9px 13px;
+}
+@media (width<=991px) {
+  .inputField {
+    max-width: 100%;
+  }
+}
+
+.generateButton {
+  color: #262522;
+  white-space: nowrap;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: #f2e2b1;
+  border-radius: 24px;
+  align-self: stretch;
+  gap: 10px;
+  width: 142px;
+  max-width: 100%;
+  min-height: 56px;
+  margin-top: 38px;
+  margin-bottom: 20px;
+  padding: 18px 10px;
+  font-family:
+    Gaegu,
+    -apple-system,
+    Roboto,
+    Helvetica,
+    sans-serif;
+  line-height: 1;
+}
+@media (width<=991px) {
+  .generateButton {
+    white-space: initial;
+  }
+}
+
+.recipeImage {
+  max-width: 100%;
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.recipeContentWrapper {
+  text-align: left;
+  width: 100%;
+}
+.recipeContentWrapper h3 {
+  padding: 10px;
+}
