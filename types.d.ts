@@ -8,8 +8,6 @@ declare module '*.css' {
     generateImage: string;
   };
   
-  type UnsubscribeFunction = () => void;
-  
   interface Window {
     electron: {
       generateRecipe: (ingredients: string) => Promise<string>;

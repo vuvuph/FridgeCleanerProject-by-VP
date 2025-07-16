@@ -44,21 +44,17 @@ function SearchSection() {
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [showRecipeDetails, setShowRecipeDetails] = useState<boolean>(false);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted with prompt:", userPrompt);
-
     try {
       const query = await generateQuery(userPrompt);
       const parsedRecipe = JSON.parse(query);
-      console.log("Parsed recipe object:", parsedRecipe);
       setRecipe(parsedRecipe);
-      
+
       const image = await fetchImage(parsedRecipe.title);
-      console.log("Image query received:", image);
       if (image) {
-        console.log("Setting image URL state with:", image);
         setImageUrl(image);
       } else {
         console.warn("No image URL returned from generateImage");
@@ -81,9 +77,7 @@ function SearchSection() {
         console.warn("generateImage is not defined on window.electron");
         return "";
       }
-      console.log("Generating image for query:", query);
       const image = await generateImage(query);
-      console.log("Image URL received:", image);
       return image;
     } catch (error) {
       console.error("Error in generateImage:", error);
@@ -112,12 +106,14 @@ function SearchSection() {
 
       {recipe && (
         <div className={styles.resultContainer}>
-          {imageUrl && (
+          {imageUrl && !showRecipeDetails && (
             <>
               <img
                 src={imageUrl}
                 alt={recipe.title}
                 className={styles.recipeImage}
+                style={{ cursor: 'pointer' }}
+                onClick={() => setShowRecipeDetails(true)}
                 onError={(e) => {
                   console.error("Image failed to load:", imageUrl);
                   (e.target as HTMLImageElement).style.display = 'none';
@@ -125,32 +121,48 @@ function SearchSection() {
               />
             </>
           )}
-          <h2>{recipe.title}</h2>
-          <p>{recipe.description}</p>
 
-          <div className={styles.recipeContentWrapper}>
-            <h3>Ingredients</h3>
-            <ul>
-              {recipe.ingredients.map((ingredient, i) => (
-                <li key={i}>
-                  {ingredient.quantity === "to taste"
-                    ? `${ingredient.name} to taste`
-                    : [ingredient.quantity, ingredient.unit, ingredient.name]
-                      .filter(Boolean)
-                      .join(" ")}
-                </li>
-              ))}
-            </ul>
+          <h2 className={styles.recipeTitle}>{recipe.title}</h2>
+          <p className={styles.recipeDescription}>{recipe.description}</p>
 
-            <h3>Instructions</h3>
-            <ol className={styles.instructionsList}>
-              {recipe.instructions.map((step, i) => (
-                <li key={i}>{step}</li>
-              ))}
-            </ol>
-          </div>
+          {showRecipeDetails && recipe && (
+            <RecipeOverlay recipe={recipe} onClose={() => setShowRecipeDetails(false)} />
+          )}
+
         </div>
       )}
     </section>
+  );
+}
+
+function RecipeOverlay({ recipe, onClose }: { recipe: Recipe; onClose: () => void }) {
+  return (
+    <div className={styles.overlay}>
+      <div className={styles.overlayContent}>
+        <button className={styles.closeButton} onClick={onClose}>
+          &times;
+        </button>
+        <h2 className={styles.recipeTitle}>{recipe.title}</h2>
+        <p className={styles.recipeDescription}>{recipe.description}</p>
+
+        <h3 className={styles.recipeIngredients}>Ingredients</h3>
+        <ul className={styles.ingredientsList}>
+          {recipe.ingredients.map((ingredient, i) => (
+            <li key={i} className={styles.ingredientsListItem}>
+              {ingredient.quantity === "to taste"
+                ? `${ingredient.name} to taste`
+                : [ingredient.quantity, ingredient.unit, ingredient.name].filter(Boolean).join(" ")}
+            </li>
+          ))}
+        </ul>
+
+        <h3 className={styles.recipeInstructions}>Instructions</h3>
+        <ol className={styles.instructionsList}>
+          {recipe.instructions.map((step, i) => (
+            <li className={styles.instructionsListItem} key={i}>{step}</li>
+          ))}
+        </ol>
+      </div>
+    </div>
   );
 }
