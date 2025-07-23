@@ -42,32 +42,33 @@ function Header() {
 // Search section
 function SearchSection() {
   const [userPrompt, setUserPrompt] = useState<string>("");
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const [showRecipeDetails, setShowRecipeDetails] = useState<boolean>(false);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      // Generate 4 recipes
       const query = await generateQuery(userPrompt);
-      const parsedRecipe = JSON.parse(query);
-      setRecipe(parsedRecipe);
+      const parsedRecipes = JSON.parse(query);
+      setRecipes(parsedRecipes);
 
-      const image = await fetchImage(parsedRecipe.title);
-      if (image) {
-        setImageUrl(image);
-      } else {
-        console.warn("No image URL returned from generateImage");
-      }
+      // Generate images for all 4 recipes
+      const images = await Promise.all(
+        parsedRecipes.map((recipe: Recipe) => fetchImage(recipe.title))
+      );
+      setImageUrls(images);
     } catch (error) {
-      console.error("Error generating recipe or image:", error);
+      console.error("Error generating recipes or images:", error);
+      console.error("Raw response:", await generateQuery(userPrompt));
     }
   };
 
   const generateQuery = async (ingredients: string): Promise<string> => {
     const { generateRecipe } = window.electron;
-    const recipe = await generateRecipe(ingredients);
-    return recipe.trim();
+    const recipes = await generateRecipe(ingredients);
+    return recipes.trim();
   };
 
   const fetchImage = async (query: string): Promise<string> => {
@@ -104,32 +105,42 @@ function SearchSection() {
         </button>
       </form>
 
-      {recipe && (
-        <div className={styles.resultContainer}>
-          {imageUrl && !showRecipeDetails && (
-            <>
-              <img
-                src={imageUrl}
-                alt={recipe.title}
-                className={styles.recipeImage}
-                style={{ cursor: 'pointer' }}
-                onClick={() => setShowRecipeDetails(true)}
-                onError={(e) => {
-                  console.error("Image failed to load:", imageUrl);
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-            </>
-          )}
-
-          <h2 className={styles.recipeTitle}>{recipe.title}</h2>
-          <p className={styles.recipeDescription}>{recipe.description}</p>
-
-          {showRecipeDetails && recipe && (
-            <RecipeOverlay recipe={recipe} onClose={() => setShowRecipeDetails(false)} />
-          )}
-
+      {recipes.length > 0 && (
+        <div className={styles.recipesContainer}> {}
+          {recipes.map((recipe, index) => (
+            <div key={index} className={styles.recipeCard}>
+              {imageUrls[index] && (
+                <img
+                  src={imageUrls[index]}
+                  alt={recipe.title}
+                  className={styles.recipeImage}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setSelectedRecipe(recipe)}
+                  onError={(e) => {
+                    console.error("Image failed to load:", imageUrls[index]);
+                    console.error("Error details:", e);
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              )}
+              <h2 className={styles.recipeTitleMainScreen}>{recipe.title}</h2>
+              <p className={styles.recipeDescriptionMainScreen}>{recipe.description}</p>
+              <button
+                className={styles.viewDetailsButton}
+                onClick={() => setSelectedRecipe(recipe)}
+              >
+                View Details
+              </button>
+            </div>
+          ))}
         </div>
+      )}
+
+      {selectedRecipe && (
+        <RecipeOverlay
+          recipe={selectedRecipe}
+          onClose={() => setSelectedRecipe(null)}
+        />
       )}
     </section>
   );

@@ -17,34 +17,44 @@ async function getGroqChatCompletionRecipe(ingredients: string) {
     messages: [
       {
         role: 'system',
-        content: `Generate a unique and detailed recipe based on the following ingredients. 
-          The response should include: 
-          - Title 
-          - Description 
-          - Ingredients list 
-          - Step-by-step instructions.
-          
-          Please return a valid JSON object in the following format:
-          {
-            "title": string,
-            "description": string,
-            "ingredients": [{ "name": string, "quantity": string }],
-            "instructions": [string]
-          }
-          Do not split strings into multiple quoted parts — each instruction should be a single string.
-          No Markdown formatting, no explanation — return only raw, parsable JSON.
-          All strings must be wrapped in double quotes, and arrays/objects must have proper commas and brackets.
+        content: `You are a recipe generator. Generate exactly 4 unique and detailed recipes based on the provided ingredients. 
 
-          Always put quantities in quotes (e.g. "1/2", "to taste").`,
+CRITICAL: Respond ONLY with valid JSON. Do not include any explanatory text, markdown formatting, or anything other than the JSON array.
+
+The response must be a JSON array of exactly 4 recipe objects in this format:
+[
+  {
+    "title": "Recipe Name",
+    "description": "Brief description of the dish",
+    "ingredients": [
+      {
+        "name": "ingredient name",
+        "quantity": "amount",
+        "unit": "measurement unit"
+      }
+    ],
+    "instructions": [
+      "Step 1 instruction",
+      "Step 2 instruction"
+    ]
+  }
+]
+
+Rules:
+- Always return exactly 4 different recipes
+- Put all quantities in quotes (e.g., "1/2", "2", "to taste")
+- Include realistic cooking instructions
+- Make recipes diverse and interesting
+- No text outside the JSON array`,
       },
       {
         role: 'user',
-        content: `Create a recipe using the following ingredients: ${ingredients}`,
+        content: `Create 4 recipes using these ingredients: ${ingredients}`,
       },
     ],
     model: "llama3-8b-8192",
     temperature: 0.7,
-    max_completion_tokens: 2048,
+    max_completion_tokens: 3000, // Increased for 4 recipes
     top_p: 1,
     stream: false,
     stop: null,
