@@ -37,11 +37,22 @@ npm run dev
 
 Below are some screenshots showcasing the FridgeCleaner interface:
 
+---
+
 1. Main Screen:
 
 <img width="1151" height="825" alt="image" src="https://github.com/user-attachments/assets/04e9a2c4-3497-49a3-a2d3-2d3abb567197" />
 
+---
+
 2. Generating recipes based on `rice, curry, chicken`:
 
-<img width="1151" height="816" alt="image" src="https://github.com/user-attachments/assets/0da366cd-d25c-47fd-a0f1-bd2b970633aa" />
+<img width="1151" height="830" alt="image" src="https://github.com/user-attachments/assets/0da366cd-d25c-47fd-a0f1-bd2b970633aa" />
 
+---
+
+3. Viewing details of recipes:
+
+<img width="1149" height="830" alt="image" src="https://github.com/user-attachments/assets/1a2578d5-54bc-48c5-96da-0a0122130dc3" />
+
+---
