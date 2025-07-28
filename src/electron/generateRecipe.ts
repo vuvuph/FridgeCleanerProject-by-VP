@@ -17,7 +17,7 @@ async function getGroqChatCompletionRecipe(ingredients: string) {
     messages: [
       {
         role: 'system',
-        content: `You are a recipe generator. Generate exactly 4 unique and detailed recipes based on the provided ingredients. 
+        content: `You are a professional recipe generator. Generate exactly 4 unique, detailed and realistic recipes based on the provided ingredients. 
 
 CRITICAL: Respond ONLY with valid JSON. Do not include any explanatory text, markdown formatting, or anything other than the JSON array.
 
@@ -42,6 +42,14 @@ The response must be a JSON array of exactly 4 recipe objects in this format:
 
 Rules:
 - Always return exactly 4 different recipes
+- Use the provided ingredients as the MAIN ingredients
+- Always include common household ingredients that people typically have:
+  * Onions, garlic, salt, black pepper, olive oil/vegetable oil
+  * Basic spices: paprika, cumin, oregano, thyme, bay leaves
+  * Common pantry items: flour, butter, lemon juice, soy sauce, vinegar
+  * Fresh herbs when appropriate: parsley, cilantro, basil
+- Each recipe should have 8-15 ingredients total (including seasonings and basics)
+- Include proper seasoning and flavor-building ingredients
 - Put all quantities in quotes (e.g., "1/2", "2", "to taste")
 - Include realistic cooking instructions
 - Make recipes diverse and interesting
