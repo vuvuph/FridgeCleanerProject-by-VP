@@ -54,7 +54,7 @@ Rules:
     ],
     model: "llama3-8b-8192",
     temperature: 0.7,
-    max_completion_tokens: 3000, // Increased for 4 recipes
+    max_completion_tokens: 3000,
     top_p: 1,
     stream: false,
     stop: null,
